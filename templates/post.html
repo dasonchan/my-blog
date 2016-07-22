@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+ <div class="post">
+    <div class="post-heading">
+      <div class="post-title">
+        <h2>{{p.subject}} by {{p.author.name}}</h2>
+      </div>
+      <div class="post-date">
+        <h3>{{p.created.strftime("%b %d, %Y")}}</h3>
+      </div>
+    </div>
+    <div class="post-content">
+        {{ p.content | safe }}
+    </div>
+    <br>
+    <div class="likes">
+    {{p.likes}} people like this post
+    {% if user and user.name != p.author.name %}
+      {% if not liked%}
+        <form method="post">
+          <input type="submit" value="Like" name="like" />
+        </form>
+      {% else %}
+        <form method="post">
+          <input type="submit" value="Unlike" name="unlike" />
+        </form>
+      {% endif %}
+    {% endif %}
+    </div>
+    <h3>Comments</h3>
+    {% for comment in comments %}
+      <div class="comment-author">
+        {% if comment.author %}
+          {{comment.author.name}} commented:
+        {% endif %}
+      </div>
+      <div class="comment-content">
+        {{comment.content}}
+      </div>
+      {% if comment.author.name == user.name %}
+        <div class="comment-options">
+          <a href="/comment/edit?comment={{ comment.key.id() }}">Edit</a>
+          <a href="/comment/delete?comment={{ comment.key.id() }}">Delete</a>
+        </div>
+      {% endif %}
+      <br>
+    {% endfor %}
+    {% if user.name %}
+      <form method="post">
+        <textarea name="content">{{ content }}</textarea>
+        <div class="error">{{error}}</div>
+        <input type="submit">
+      </form>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="post">
+    <div class="post-heading">
+        <div class="post-title">
+            <h2>{{p.subject}} by {{p.author.name}}</h2>
+        </div>
+        <div class="post-date">
+            <h3>{{p.created.strftime("%b %d, %Y")}}</h3>
+        </div>
+    </div>
+    <div class="post-content">
+        {{ p.content | safe }}
+    </div>
+    <br>
+    <form method="post">
+        <div>
+        Are you sure you want to delete this post?
+        <input type="submit">
+        </div>
+    </form>
+    <a href="/blog">Cancel</a>
+  </div>
+{% endblock %}
